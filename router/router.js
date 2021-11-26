@@ -3,7 +3,10 @@ const router = express.Router();
 const Mobile = require('../productModels/mobileShema');
 const Computer = require('../productModels/computerSchema');
 const Drive = require('../productModels/drivesSchema');
-const User = require('../userModel/userSchema')
+const User = require('../userModel/userSchema');
+const Task = require('../userModel/task');
+const CompleteTask = require('../userModel/completeTask');
+const Store =require("../userModel/store")
 
 //mobile
 //get
@@ -62,7 +65,7 @@ router.post('/computer', (req, res) => {
 })
 //update
 router.put('/computer/:id',(req,res)=>{
-    Computer.findByIdAndUpdate({_id:req.params.id},req.body)
+    Computer.findOneAndUpdate({_id:req.params.id},req.body)
     .then(()=>{
         Computer.findOne({_id:req.params.id})
         .then((data)=>{
@@ -127,6 +130,14 @@ router.delete('/drive/:id', (req, res) => {
            res.send(data);
        })
    })
+
+   router.delete('/user/:id', (req, res) => {
+    User.findByIdAndRemove({_id:req.params.id})
+    .then((data)=>{
+        res.send(data)
+    })
+    })
+   
    //post
 
    router.post('/user',(req,res)=>{
@@ -136,8 +147,20 @@ router.delete('/drive/:id', (req, res) => {
            res.send(data);
        })
    })
+   router.post('/user/:id',(req,res)=>{
+   
+    User.findByIdAndUpdate({_id:req.params.id},req.body)
+    .then(()=>{
+        User.findOne({_id:req.params.id})
+        .then((data)=>{
+            res.send(data)
+        })
+    })
+
+})
  //put
 
+ 
  router.put('/user/:id',(req,res)=>{
     User.findByIdAndUpdate({_id:req.params.id},req.body)
     .then(()=>{
@@ -146,9 +169,156 @@ router.delete('/drive/:id', (req, res) => {
             res.send(data)
         })
     })
+
 })
 
+router.put('/users/:id',(req,res)=>{
+    User.findOneAndUpdate({eMail:req.params.id},req.body)
+    .then(()=>{
+        User.findOne({eMail:req.params.id})
+        .then((data)=>{
+            res.send(data)
+        })
+    })
+   
+})
+router.get('/users/:id',(req,res)=>{
+    User.findOne({eMail:req.params.id})
+    .then((data)=>{
+        res.send(data);
+    })
+})
+router.get('/usersid/:id',(req,res)=>{
+    User.findOne({_id:req.params.id})
+    .then((data)=>{
+        res.send(data);
+    })
+})
 
+//task
 
+//get 
+router.get('/task', (req, res) => {
+    Task.find()
+    .then((data)=>{
+        res.send(data)
+    })
+    
+})
+//post
+router.post('/task', (req, res) => {
+    console.log(req.body);
+    Task.create(req.body)
+    .then((data)=>{
+        res.send(data);
+    })
+})
+//put
+router.put('/task/:id',(req,res)=>{
+    Task.findByIdAndUpdate({_id:req.params.id},req.body)
+    .then(()=>{
+        Task.findOne({_id:req.params.id})
+        .then((data)=>{
+            res.send(data)
+        })
+    })
+})
+router.put('/tasks/:id',(req,res)=>{
+    Task.findByIdAndUpdate({_id:req.params.id},req.body)
+    .then(()=>{
+        Task.findOne({_id:req.params.id})
+        .then((data)=>{
+            res.send(data)
+        })
+    })
+})
+//delete
+router.delete('/task/:id', (req, res) => {
+    Task.findByIdAndRemove({_id:req.params.id})
+    .then((data)=>{
+        res.send(data)
+    })
+    })
+//-----------------------
+
+//Complete task
+//get
+router.get('/Ctask', (req, res) => {
+    CompleteTask.find()
+    .then((data)=>{
+        res.send(data)
+    })
+    
+})
+//post
+router.post('/Ctask', (req, res) => {
+    console.log(req.body);
+    CompleteTask.create(req.body)
+    .then((data)=>{
+        res.send(data);
+    })
+})
+//put
+router.put('/Ctask/:id',(req,res)=>{
+    CompleteTask.findByIdAndUpdate({_id:req.params.id},req.body)
+    .then(()=>{
+        CompleteTask.findOne({_id:req.params.id})
+        .then((data)=>{
+            res.send(data)
+        })
+    })
+})
+//delete
+router.delete('/Ctask/:id', (req, res) => {
+    CompleteTask.findByIdAndRemove({_id:req.params.id})
+    .then((data)=>{
+        res.send(data)
+    })
+    })
+
+    //
+
+    //store
+
+   //get
+router.get('/store', (req, res) => {
+    Store.find()
+    .then((data)=>{
+        res.send(data)
+    })
+    
+})
+router.get('/store/:id', (req, res) => {
+    Store.find({ID:req.params.id})
+    .then((data)=>{
+        res.send(data)
+    })
+    
+})
+//post
+router.post('/store', (req, res) => {
+    console.log(req.body);
+    Store.create(req.body)
+    .then((data)=>{
+        res.send(data);
+    })
+})
+//put
+router.put('/store/:id',(req,res)=>{
+    Store.findByIdAndUpdate({_id:req.params.id},req.body)
+    .then(()=>{
+        Store.findOne({_id:req.params.id})
+        .then((data)=>{
+            res.send(data)
+        })
+    })
+})
+//delete
+router.delete('/store/:id', (req, res) => {
+    Store.findByIdAndRemove({_id:req.params.id})
+    .then((data)=>{
+        res.send(data)
+    })
+    })
 
 module.exports = router;
